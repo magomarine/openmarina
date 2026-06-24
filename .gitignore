@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Tooling
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Local data caches
+.cache/
+*.local
+
+# Internal-only — do NOT publish (strategy/handoff, references private repos & patent boundary)
+HANDOFF.md
+PUSH_ME.txt
+
+*.csv

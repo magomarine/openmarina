@@ -1,0 +1,13 @@
+openmarina
+Copyright 2026 Mago Marine Inc. and the openmarina contributors.
+
+
+This product includes software developed at Mago Marine Inc.
+Licensed under the Apache License, Version 2.0 (the "License").
+You may obtain a copy of the License in the LICENSE file or at
+http://www.apache.org/licenses/LICENSE-2.0
+
+openmarina normalizes data retrieved from public marine data providers
+(e.g. NOAA / NDBC). Those providers are the sources of their respective
+data; openmarina does not claim ownership of upstream public data and is
+not endorsed by any provider. Each provider's terms of use apply to its data.
