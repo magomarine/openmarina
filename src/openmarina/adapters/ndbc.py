@@ -82,6 +82,7 @@ class NdbcAdapter:
                     continue
                 station_id = f"ndbc:{sid.lower()}"
                 self._coords[station_id] = (float(lat), float(lon))
+                # aspirational: activestations.xml gives no per-variable truth; nearest(requires=...) probes
                 out.append(Station(station_id, float(lat), float(lon), s.get("name"), _VARIABLES))
             return out
         except ET.ParseError as e:
