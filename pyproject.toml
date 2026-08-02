@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "openmarina"
-version = "0.0.1"
+version = "0.0.2"
 description = "The open marina for maritime data — one clean Python interface over fragmented US public marine data (NDBC, tides & currents, and more)."
 readme = "README.md"
 requires-python = ">=3.10"

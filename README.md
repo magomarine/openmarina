@@ -53,12 +53,20 @@ cf.to_wide()                                        # tidy table, one column per
 cf.meta                                             # provenance, datum, cadence
 openmarina.load_many(["ndbc:41122", "ndbc:41009"])  # several stations at once
 openmarina.nearest_zip("33139")                     # nearest station to a ZIP (pip install pgeocode)
+
+s = openmarina.summary_zip("33139")                 # waves + wind + tide + temp, one call
+s.groups["wave"].values                             # {'wave_height_significant': 0.2, ...} — SI
+openmarina.signalk.summary_to_deltas(s)             # SignalK delta JSON, station-attributed
 ```
+
+The wave buoy is offshore and the tide gauge is in the harbor — `summary()` probes each
+capability group independently and tells you which station answered, from how far away.
 
 From the terminal:
 ```bash
 openmarina pull ndbc:41122 --wide -o out.csv
 openmarina nearest 25.76 -80.19
+openmarina summary --zip 33139            # add --json or --signalk for machine output
 openmarina stations
 # on a locked-down machine, run any command as:  python -m openmarina ...
 ```

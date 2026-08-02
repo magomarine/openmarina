@@ -127,6 +127,15 @@ class CanonicalFrame:
     data: pd.DataFrame
     meta: dict = field(default_factory=dict)
 
+    def __post_init__(self) -> None:
+        # pandas >= 3.0 infers microsecond resolution from ISO strings; the canonical
+        # schema promises datetime64[ns, UTC], so coerce at the one place every
+        # adapter's frame passes through.
+        if "timestamp" in self.data.columns and len(self.data):
+            ts = self.data["timestamp"]
+            if str(ts.dtype) != "datetime64[ns, UTC]":
+                self.data["timestamp"] = ts.astype("datetime64[ns, UTC]")
+
     #: canonical column order for data (the long/tidy schema)
     COLUMNS: tuple[str, ...] = (
         "timestamp",
