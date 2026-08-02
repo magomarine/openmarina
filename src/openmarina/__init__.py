@@ -11,7 +11,7 @@ variables come from one controlled vocabulary (SI units, UTC, WGS84).
 An open library for public marine data. Apache-2.0.
 """
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 from openmarina.types import (
     AdapterFetchError,
@@ -25,8 +25,9 @@ from openmarina.types import (
     Station,
     VocabularyError,
 )
-from openmarina import conformance, vocabulary
+from openmarina import conformance, signalk, vocabulary
 from openmarina.core import load, load_many, nearest, nearest_zip
+from openmarina._summary import GroupReading, Summary, summary, summary_zip
 
 __all__ = [
     "__version__",
@@ -34,6 +35,11 @@ __all__ = [
     "load_many",
     "nearest",
     "nearest_zip",
+    "summary",
+    "summary_zip",
+    "Summary",
+    "GroupReading",
+    "signalk",
     "vocabulary",
     "conformance",
     "Station",

@@ -40,6 +40,15 @@ def _build_parser() -> argparse.ArgumentParser:
 
     st = sub.add_parser("stations", help="list stations for a source")
     st.add_argument("--source", default="ndbc")
+
+    sm = sub.add_parser("summary", help="waves/wind/tide/temp around a lat/lon or ZIP, one call")
+    sm.add_argument("lat", type=float, nargs="?", help="latitude (or use --zip)")
+    sm.add_argument("lon", type=float, nargs="?", help="longitude (or use --zip)")
+    sm.add_argument("--zip", dest="zipcode", default=None, help="US/postal ZIP, e.g. 33139")
+    sm.add_argument("--country", default="us", help="country for --zip (default: us)")
+    sm.add_argument("--groups", default=None, help="comma-separated subset, e.g. wave,tide")
+    sm.add_argument("--json", action="store_true", help="print JSON instead of text")
+    sm.add_argument("--signalk", action="store_true", help="print SignalK delta JSON")
     return p
 
 
@@ -71,6 +80,32 @@ def main(argv=None) -> int:
     elif args.cmd == "stations":
         for s in core._adapter_for(args.source).list_stations():
             print(f"{s.station_id}\t{s.lat}\t{s.lon}\t{s.name or ''}")
+
+    elif args.cmd == "summary":
+        import json
+
+        from openmarina import _summary as summ
+        from openmarina import signalk as sk
+
+        groups = args.groups.split(",") if args.groups else None
+        if args.zipcode:
+            s = summ.summary_zip(args.zipcode, country=args.country, groups=groups)
+        elif args.lat is not None and args.lon is not None:
+            s = summ.summary(args.lat, args.lon, groups=groups)
+        else:
+            print("provide LAT LON or --zip ZIP", file=sys.stderr)
+            return 2
+        if args.signalk:
+            print(json.dumps(sk.summary_to_deltas(s), indent=2))
+        elif args.json:
+            print(json.dumps(s.to_dict(), indent=2))
+        else:
+            for name, r in s.groups.items():
+                if r is None:
+                    print(f"{name:5s}  (no capable station found)")
+                    continue
+                vals = "  ".join(f"{k}={v:g}{r.units.get(k, '')}" for k, v in r.values.items())
+                print(f"{name:5s}  {r.station_id} ({r.distance_km:.1f}km, {r.time:%H:%MZ})  {vals}")
 
     return 0
 

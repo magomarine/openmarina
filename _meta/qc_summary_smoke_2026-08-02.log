@@ -1,0 +1,106 @@
+﻿wave   ndbc:41122 (24.5km, 05:30Z)  wave_height_significant=0.2m  wave_period_dominant=3s  wave_period_average=3.5s  wave_direction=160deg
+wind   ndbc:vakf1 (6.3km, 05:30Z)  wind_speed=0.5m/s  wind_direction=350deg  wind_gust=1.5m/s
+tide   coops:8723214 (6.2km, 06:12Z)  water_level=0.586m
+temp   ndbc:vakf1 (6.3km, 05:30Z)  water_temperature=31.2degree_celsius  air_temperature=27.2degree_celsius  air_pressure=101510Pa
+[
+  {
+    "context": "vessels.self",
+    "updates": [
+      {
+        "source": {
+          "label": "openmarina",
+          "src": "ndbc:41122"
+        },
+        "timestamp": "2026-08-02T05:30:00.000Z",
+        "values": [
+          {
+            "path": "environment.wave.significantHeight",
+            "value": 0.2
+          },
+          {
+            "path": "environment.wave.period",
+            "value": 3.0
+          },
+          {
+            "path": "environment.wave.periodAverage",
+            "value": 3.5
+          },
+          {
+            "path": "environment.wave.direction",
+            "value": 2.792526803190927
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "context": "vessels.self",
+    "updates": [
+      {
+        "source": {
+          "label": "openmarina",
+          "src": "ndbc:vakf1"
+        },
+        "timestamp": "2026-08-02T05:30:00.000Z",
+        "values": [
+          {
+            "path": "environment.wind.speedTrue",
+            "value": 0.5
+          },
+          {
+            "path": "environment.wind.directionTrue",
+            "value": 6.1086523819801535
+          },
+          {
+            "path": "environment.wind.gust",
+            "value": 1.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "context": "vessels.self",
+    "updates": [
+      {
+        "source": {
+          "label": "openmarina",
+          "src": "coops:8723214"
+        },
+        "timestamp": "2026-08-02T06:12:00.000Z",
+        "values": [
+          {
+            "path": "environment.water.level",
+            "value": 0.586
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "context": "vessels.self",
+    "updates": [
+      {
+        "source": {
+          "label": "openmarina",
+          "src": "ndbc:vakf1"
+        },
+        "timestamp": "2026-08-02T05:30:00.000Z",
+        "values": [
+          {
+            "path": "environment.water.temperature",
+            "value": 304.34999999999997
+          },
+          {
+            "path": "environment.outside.temperature",
+            "value": 300.34999999999997
+          },
+          {
+            "path": "environment.outside.pressure",
+            "value": 101510.0
+          }
+        ]
+      }
+    ]
+  }
+]
