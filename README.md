@@ -40,7 +40,7 @@ same variable names, the same SI units, UTC, WGS84 — no matter which agency th
 
 Install (Python 3.10+):
 ```bash
-pip install openmarina        # once published
+pip install openmarina
 pip install -e ".[dev]"       # from a clone
 ```
 

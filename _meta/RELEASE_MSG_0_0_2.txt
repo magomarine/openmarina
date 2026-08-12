@@ -1,0 +1,18 @@
+openmarina 0.0.2: publish what the README already documents
+
+An audit on 2026-08-12 found the README showing summary_zip() and
+signalk.summary_to_deltas() while `pip install openmarina` still served
+0.0.1, which has neither. Following the README raised AttributeError.
+The docs had moved on 08-02; the release had not.
+
+- README: drop "# once published". The package has been on PyPI since
+  2026-06-24, and that line rendered on the PyPI page itself.
+- CHANGELOG.md: added, with 0.0.1 and 0.0.2 entries recorded after the fact
+  so the next drift is visible in one file.
+- _meta/release_qc.py: release gate. Every openmarina.X symbol and CLI
+  subcommand the README shows must exist in the package being released, and
+  the version must agree across pyproject / __init__ / CHANGELOG. A mutation
+  test that reproduces the 08-12 state fails it 4 ways.
+
+Verified: gate 8/8 (source and dist), 81 tests pass, and the built wheel
+installed into a clean venv satisfies every README example.
