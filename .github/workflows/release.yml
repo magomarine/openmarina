@@ -1,0 +1,68 @@
+name: release
+
+# Publish to PyPI without a token on anyone's machine.
+#
+# 2026-08-13: publishing 0.0.2 stalled for a day because a ~90+ character API
+# token could not be moved into a Windows terminal (getpass blocks paste). With
+# Trusted Publishing there is nothing to move: GitHub exchanges a short-lived
+# OIDC token with PyPI, and PyPI checks the owner/repo/workflow tuple.
+#
+# One-time setup on PyPI (project openmarina -> Publishing -> Add a publisher):
+#   Owner: magomarine · Repository: openmarina
+#   Workflow name: release.yml · Environment: pypi
+#
+# To cut a release afterwards:  git tag -a v0.0.3 -m "..." && git push --follow-tags
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  gate:
+    name: release gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install build tooling
+        run: python -m pip install --upgrade pip build pytest
+      - name: Tests
+        run: |
+          python -m pip install -e ".[dev,geo]"
+          python -m pytest -q
+      - name: Build
+        run: python -m build
+      # The gate that made this repo's 08-12 drift impossible to ship: every
+      # openmarina.X symbol and CLI subcommand the README shows must exist in
+      # the package being released, and the version must agree across
+      # pyproject / __init__ / CHANGELOG.
+      - name: Release gate (source + dist)
+        run: python _meta/release_qc.py --dist
+      - name: Tag must match the version being released
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          tag="${GITHUB_REF#refs/tags/v}"
+          ver="$(python -c 'import re,pathlib;print(re.search(r"^version = \"([^\"]+)\"", pathlib.Path("pyproject.toml").read_text(), re.M).group(1))')"
+          echo "tag=$tag  pyproject=$ver"
+          test "$tag" = "$ver"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    name: publish to PyPI
+    needs: gate
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write      # required for Trusted Publishing (OIDC)
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
